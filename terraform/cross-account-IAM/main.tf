@@ -18,11 +18,11 @@ provider "aws" {
 }
 
 provider "kubernetes" {
-  version = "~> 1.11"
+  version = "~> 2.0.2"
 }
 
 provider "helm" {
-  version = "1.3.2"
+  version = "2.0.2"
   kubernetes {
   }
 }
