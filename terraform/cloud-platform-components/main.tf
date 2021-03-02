@@ -13,14 +13,15 @@ terraform {
 provider "aws" {
   profile = "moj-cp"
   region  = "eu-west-2"
+  version = "3.30.0"
 }
 
 provider "kubernetes" {
-  version = "~> 1.11"
+  version = "~> 2.0.2"
 }
 
 provider "helm" {
-  version = "1.3.2"
+  version = "2.0.2"
   kubernetes {
   }
 }
