@@ -21,7 +21,7 @@ provider "aws" {
 # the AWS providr credentials are handled.
 #
 provider "auth0" {
-  version = "= 0.12.2"
+  version = "= 0.19.0"
   domain  = local.auth0_tenant_domain
 }
 
@@ -105,7 +105,7 @@ module "bastion" {
 #########
 
 module "auth0" {
-  source = "github.com/ministryofjustice/cloud-platform-terraform-auth0?ref=1.1.3"
+  source = "./../../../cloud-platform-terraform-auth0"
 
   cluster_name         = local.cluster_name
   services_base_domain = local.services_base_domain
