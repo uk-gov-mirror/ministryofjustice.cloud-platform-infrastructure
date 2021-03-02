@@ -20,10 +20,6 @@ provider "aws" {
   profile = "moj-cp"
 }
 
-provider "auth0" {
-  version = "= 0.12.2"
-  domain  = local.auth0_tenant_domain
-}
 
 ###########################
 # Locals & Data Resources #
@@ -125,7 +121,8 @@ module "bastion" {
 #########
 
 module "auth0" {
-  source = "github.com/ministryofjustice/cloud-platform-terraform-auth0?ref=1.1.1"
+#  source = "~/projects/cloud-platform-terraform-auth0?ref=1.1.1"
+  source = "./../../../cloud-platform-terraform-auth0"
 
   cluster_name         = local.cluster_name
   services_base_domain = local.services_base_domain
