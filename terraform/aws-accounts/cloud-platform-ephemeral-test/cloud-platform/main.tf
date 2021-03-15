@@ -34,6 +34,17 @@ data "terraform_remote_state" "global" {
 }
 
 
+data "aws_s3_bucket" "kops_state" {
+  bucket   = "cloud-platform-ephemeral-test-kops-state"
+  provider = aws.london
+}
+
+data "aws_route53_zone" "cloud_platform" {
+  name = "et.cloud-platform.service.justice.gov.uk"
+}
+
+
+
 ###########################
 # Locals & Data Resources #
 ###########################
@@ -61,7 +72,7 @@ module "kops" {
 
   vpc_name            = local.vpc
   cluster_domain_name = trimsuffix(local.cluster_base_domain_name, ".")
-  kops_state_store    = data.terraform_remote_state.global.outputs.cloud_platform_kops_state
+  kops_state_store    = data.aws_s3_bucket.kops_state.bucket
 
   auth0_client_id         = module.auth0.oidc_kubernetes_client_id
   authorized_keys_manager = module.bastion.authorized_keys_manager
