@@ -13,6 +13,7 @@ terraform {
 }
 
 provider "aws" {
+  alias   = "london"
   region = "eu-west-2"
 }
 
@@ -22,14 +23,14 @@ provider "auth0" {
   domain  = var.auth0_tenant_domain
 }
 
-data "terraform_remote_state" "global" {
-  backend = "s3"
 
-  config = {
-    bucket = "cloud-platform-ephemeral-test-tfstate"
-    region = "eu-west-2"
-    key    = "global-resources/terraform.tfstate"
-  }
+data "aws_s3_bucket" "kops_state" {
+  bucket   = "cloud-platform-ephemeral-test-kops-state"
+  provider = aws.london
+}
+
+data "aws_route53_zone" "cloud_platform" {
+  name = "et.cloud-platform.service.justice.gov.uk"
 }
 
 ###########################
@@ -40,7 +41,11 @@ locals {
   account_root_hostzone_name = data.terraform_remote_state.global.outputs.aws_account_hostzone_name
   cluster_name               = terraform.workspace
   cluster_base_domain_name   = "${local.cluster_name}.${local.account_root_hostzone_name}"
-  vpc_name                   = var.vpc_name != "" ? var.vpc_name : terraform.workspace
+  vpc                      = var.vpc_name == "" ? terraform.workspace : var.vpc_name
+  is_live_cluster      = terraform.workspace == "live-1"
+  services_base_domain = local.is_live_cluster ? "et.cloud-platform.service.justice.gov.uk" : "apps.${local.cluster_base_domain_name}"
+  is_manager_cluster   = terraform.workspace == "manager"
+  services_eks_domain  = local.is_manager_cluster ? "et.cloud-platform.service.justice.gov.uk" : "apps.${local.cluster_base_domain_name}"
 }
 
 ########
