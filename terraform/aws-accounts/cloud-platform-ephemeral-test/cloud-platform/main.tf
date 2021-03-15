@@ -39,7 +39,7 @@ data "aws_route53_zone" "cloud_platform" {
 ###########################
 
 locals {
-  account_root_hostzone_name = data.terraform_remote_state.global.outputs.aws_account_hostzone_name
+  account_root_hostzone_name = data.aws_route53_zone.cloud_platform.name
   cluster_name               = terraform.workspace
   cluster_base_domain_name   = "${local.cluster_name}.${local.account_root_hostzone_name}"
   auth0_tenant_domain      = var.auth0_tenant_domain
