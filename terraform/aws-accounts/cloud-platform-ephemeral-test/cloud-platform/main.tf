@@ -23,15 +23,15 @@ provider "auth0" {
   domain  = var.auth0_tenant_domain
 }
 
+data "terraform_remote_state" "global" {
+  backend = "s3"
 
-data "aws_s3_bucket" "kops_state" {
-  bucket   = "cloud-platform-ephemeral-test-kops-state"
-  provider = aws.london
+  config = {
+    bucket = "cloud-platform-ephemeral-test-tfstate"
+    region = "eu-west-2"
+    key    = "global-resources/terraform.tfstate"
 }
 
-data "aws_route53_zone" "cloud_platform" {
-  name = "et.cloud-platform.service.justice.gov.uk"
-}
 
 ###########################
 # Locals & Data Resources #
@@ -82,7 +82,7 @@ module "kops" {
 module "auth0" {
   source = "github.com/ministryofjustice/cloud-platform-terraform-auth0?ref=1.1.3"
 
-  cluster_name         = local.cluster_name
+  cluster_name         = local.cluster_name 
   services_base_domain = local.services_base_domain
   services_eks_domain  = local.services_eks_domain
 }
