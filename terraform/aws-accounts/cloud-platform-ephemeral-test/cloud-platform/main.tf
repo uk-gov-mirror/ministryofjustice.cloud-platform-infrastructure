@@ -31,6 +31,7 @@ data "terraform_remote_state" "global" {
     region = "eu-west-2"
     key    = "global-resources/terraform.tfstate"
 }
+}
 
 
 ###########################
