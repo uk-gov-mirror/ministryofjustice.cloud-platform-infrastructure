@@ -40,5 +40,5 @@ variable "cluster_names" {
 variable "base_domain_name" {
   description = "Base domain name for the VPC"
   type        = string
-  default     = "ephemeral-test.cloud-platform.service.justice.gov.uk"
+  default     = "et.cloud-platform.service.justice.gov.uk"
 }
