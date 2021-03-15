@@ -11,7 +11,7 @@ require "fileutils"
 require "optparse"
 
 MAX_CLUSTER_NAME_LENGTH = 12
-CLUSTER_SUFFIX = "cloud-platform.service.justice.gov.uk"
+CLUSTER_SUFFIX = "et.cloud-platform.service.justice.gov.uk"
 AWS_REGION = "eu-west-2"
 
 REQUIRED_ENV_VARS = %w[AWS_PROFILE AUTH0_DOMAIN AUTH0_CLIENT_ID AUTH0_CLIENT_SECRET KOPS_STATE_STORE]
