@@ -44,7 +44,7 @@ locals {
   cluster_base_domain_name   = "${local.cluster_name}.${local.account_root_hostzone_name}"
   auth0_tenant_domain      = var.auth0_tenant_domain
   oidc_issuer_url          = "https://${local.auth0_tenant_domain}/"
-  
+
   vpc                      = var.vpc_name == "" ? terraform.workspace : var.vpc_name
   is_live_cluster      = terraform.workspace == "live-1"
   services_base_domain = local.is_live_cluster ? "et.cloud-platform.service.justice.gov.uk" : "apps.${local.cluster_base_domain_name}"
@@ -98,7 +98,7 @@ module "auth0" {
 module "bastion" {
   source = "github.com/ministryofjustice/cloud-platform-terraform-bastion?ref=1.4.0"
 
-  vpc_name            = local.vpc_name
+  vpc_name            = local.vpc
   route53_zone        = aws_route53_zone.cluster.name
   cluster_domain_name = local.cluster_base_domain_name
 }
