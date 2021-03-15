@@ -23,17 +23,6 @@ provider "auth0" {
   domain  = var.auth0_tenant_domain
 }
 
-data "terraform_remote_state" "global" {
-  backend = "s3"
-
-  config = {
-    bucket = "cloud-platform-ephemeral-test-tfstate"
-    region = "eu-west-2"
-    key    = "global-resources/terraform.tfstate"
-}
-}
-
-
 data "aws_s3_bucket" "kops_state" {
   bucket   = "cloud-platform-ephemeral-test-kops-state"
   provider = aws.london
@@ -124,7 +113,7 @@ resource "aws_route53_zone" "cluster" {
 }
 
 resource "aws_route53_record" "parent_zone_cluster_ns" {
-  zone_id = data.terraform_remote_state.global.outputs.aws_account_hostzone_id
+  zone_id = data.aws_route53_zone.cloud_platform.id
   name    = aws_route53_zone.cluster.name
   type    = "NS"
   ttl     = "30"
